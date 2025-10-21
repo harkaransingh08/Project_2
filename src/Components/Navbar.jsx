@@ -22,14 +22,14 @@ export default function Navbar() {
 
   return (
     <div className="p-4 bg-gray-100 arial">
-      <nav className="flex justify-between">
+      <nav className=" flex justify-between">
         {/* Logo */}
         <ul>
           <img src="https://tinyurl.com/yy8uhxp7" alt="Myntra" width={80} />
         </ul>
 
         {/* Navbar Links */}
-        <ul className="flex justify-evenly items-center gap-5">
+        <ul className=" hidden md:flex justify-evenly items-center gap-5">
           {navLinks.map((link) => (
             <li
               key={link.path}
