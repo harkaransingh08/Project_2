@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <div className="p-4 bg-gray-100 arial">
-      <nav className=" flex justify-between">
+      <nav className=" hidden md:flex justify-between">
         {/* Logo */}
         <ul>
           <img src="https://tinyurl.com/yy8uhxp7" alt="Myntra" width={80} />
