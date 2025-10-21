@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <div className="p-4 bg-gray-100 arial">
-      <nav className=" hidden md:flex justify-between">
+      <nav className=" flex justify-between">
         {/* Logo */}
         <ul>
           <img src="https://tinyurl.com/yy8uhxp7" alt="Myntra" width={80} />
@@ -72,7 +72,7 @@ export default function Navbar() {
           </ul>
 
           {/* Profile / Wishlist / Bag */}
-          <ul className="flex justify-evenly items-center gap-5">
+          <ul className="hidden md:flex justify-evenly items-center gap-5">
             <li className="cursor-pointer">Profile</li>
             <li className="cursor-pointer">Wishlist</li>
             <li className="cursor-pointer">Bag</li>
