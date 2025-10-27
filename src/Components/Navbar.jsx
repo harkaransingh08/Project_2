@@ -27,7 +27,7 @@ export default function Navbar() {
           <img src="https://tinyurl.com/yy8uhxp7" alt="Myntra" width={80} />
         </ul>
 
-        
+          
 
         <ul className="hidden md:flex justify-evenly items-center gap-8 mr-30 font-bold">
   {/* Men dropdown first */}
@@ -64,7 +64,7 @@ pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:po
 
       </ul>
     </div>
-  </div>
+  </div>    
 
   {/* Then render the rest of navLinks (excluding "Men") */}
   {navLinks
@@ -100,7 +100,7 @@ pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:po
             >
               <path d="m21 21-4.34-4.34" />
               <circle cx="11" cy="11" r="8" />
-            </svg>
+            </svg>  
             <input
               type="text"
               placeholder="Search for products,brands and more"
@@ -129,7 +129,7 @@ pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:po
     Profile
   </li>
 
-  {/* Dropdown */}
+ 
   <div className="absolute right-0 top-full mt-1 w-80 px-8 py-2 cursor-pointer bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] arial font-light
 opacity-0 scale-95 transform origin-top-right transition-all duration-200 ease-out
 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
