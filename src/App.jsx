@@ -10,8 +10,8 @@ import Contact from './components/Contact.jsx'
 import SignUp from './components/SignUp.jsx'
 import AustraliaStudy from './components/Study/AustraliaStudy.jsx'
 import CanadaStudy from './components/Study/CanadaStudy.jsx'
-import USAStudy from './components/Study/USAStudy.jsx' // Fixed case
-import UKStudy from './components/Study/UKStudy.jsx'   // Fixed case
+import UsaStudy from './components/Study/UsaStudy.jsx'
+import UkStudy from './components/Study/UkStudy.jsx'
 import EuropeStudy from './components/Study/EuropeStudy.jsx'
 import SingaporeStudy from './components/Study/SingaporeStudy.jsx'
 import ViewUniversity from './components/Study/University/ViewUniverty.jsx' // Fixed spelling
