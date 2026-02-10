@@ -1,209 +1,234 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { 
+  FaFacebook, FaInstagram, FaYoutube, FaChevronDown, FaHome, 
+  FaGraduationCap, FaServicestack, FaInfoCircle, FaBlog, 
+  FaGlobeAmericas, 
+} from 'react-icons/fa';
+import { HiMenuAlt3, HiX } from 'react-icons/hi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-export default function Navbar() {
-  // Object array for links
-  const navLinks = [
-    { name: "Men", path: "/men" },
-    { name: "Women", path: "/women" },
-    { name: "Kids", path: "/kids" },
-    { name: "Home", path: "/" },
-    { name: "Beauty", path: "/beauty" },
-    { name: "Genz", path: "/genz" },
-    { name: "Studio", path: "/studio" },
+export default function Navbar({ isDarkMode, toggleTheme }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const MenuData = [
+    { name: 'Home', link: '/', icon: <FaHome className="text-amber-500" /> },
+    {
+      name: 'Education',
+      icon: <FaGraduationCap className="text-amber-500" />,
+      dropDown: [
+        { name: 'Australian Study Visa', link: '/study-visa/australia', icon: <FaGlobeAmericas /> },
+        { name: 'Singapore Study Visa', link: '/study-visa/singapore', icon: <FaGlobeAmericas /> },
+        { name: 'Canada Study Visa', link: '/study-visa/canada', icon: <FaGlobeAmericas /> },
+        { name: 'USA Study Visa', link: '/study-visa/usa', icon: <FaGlobeAmericas /> },
+        { name: 'UK Study Visa', link: '/study-visa/uk', icon: <FaGlobeAmericas /> },
+        { name: 'Europe Study Visa', link: '/study-visa/europe', icon: <FaGlobeAmericas /> },
+      ],
+    },
+    { name: 'Services', link: '/student-services', icon: <FaServicestack className="text-amber-500" /> },
+    { name: 'About', link: '/about-us', icon: <FaInfoCircle className="text-amber-500" /> },
+    { name: 'Blog', link: '/blog', icon: <FaBlog className="text-amber-500" /> },
   ];
 
-  // useState to track which link is active
-  const [active, setActive] = useState("Home");
-
-  // Arrow function for handling click
-  const handleClick = (name) => {
-    setActive(name);
-  };
+  const SocialMedia = [
+    { name: 'Facebook', icon: <FaFacebook />, link: '', hover: 'hover:text-[#1877F2]' },
+    { name: 'Instagram', icon: <FaInstagram />, link: '', hover: 'hover:text-[#DD2A7B]' },
+    { name: 'YouTube', icon: <FaYoutube />, link: '', hover: 'hover:text-[#FF0000]' },
+  ];
 
   return (
-    <div className="p-4 bg-white arial shadow-2xl">
-      <nav className=" flex justify-between">
-        <ul className="cursor-pointer hover:underline">
-          <img src="https://tinyurl.com/yy8uhxp7" alt="Myntra" width={80} />
-        </ul>
-
-          
-
-        <ul className="hidden md:flex justify-evenly items-center gap-8 mr-30 font-bold">
-  {/* Men dropdown first */}
-  <div className="relative group">
-    <li className="cursor-pointer transition-colors flex items-center gap-1 text-gray-800 hover:text-pink-600">
-      <a href="/men">Men</a>
-    </li>
-    <div className="absolute left-0 top-full mt-0 w-52 bg-white shadow-lg rounded-md
-    opacity-0 invisible group-hover:opacity-100 group-hover:visible
-    transition-all duration-200 ease-out pointer-events-none group-hover:pointer-events-auto">
-      <ul className=" absolute right-0 top-full mt-1 w-80 px-8 py-2 cursor-pointer bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] arial font-light
-opacity-0 scale-95 transform origin-top-right transition-all duration-200 ease-out
-pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto ">
-        
-        <div className="text-sm"> 
-          <li className="text-pink-700 font-bold">Top Wear</li> <br />
-          <li className="hover:text-pink-500 hover:scale-110">Topwear</li> <br />
-        <li className="hover:text-pink-500 hover:scale-110">Bottom Wear</li> <br />
-        <li className="hover:text-pink-500 hover:scale-110">Foot Wear</li> <br />
-        <li className="hover:text-pink-500 hover:scale-110">Sports Wear</li><br />
-        <li className="hover:text-pink-500 hover:scale-110">Accessories</li><br />
-        </div>
-
-        <hr />
-
-        <div>
-            <li className="text-pink-700 font-bold">Indian & Festival Wear</li> <br />
-            <li className="hover:text-pink-500 hover:scale-110">Kurtas & Kurtas Set</li> <br />
-            <li className="hover:text-pink-500 hover:scale-110">Shervanies</li> <br />
-            <li className="hover:text-pink-500 hover:scale-110">Nehru Jackets</li> <br />
-            <li className="hover:text-pink-500 hover:scale-110">Dhotis</li> <br />
-            <li></li>
-        </div>
-
-      </ul>
-    </div>
-  </div>    
-
-  {/* Then render the rest of navLinks (excluding "Men") */}
-  {navLinks
-    .filter((link) => link.name !== "Men")
-    .map((link) => (
-      <li
-        key={link.path}
-        onClick={() => handleClick(link.name)}
-        className={`cursor-pointer transition-colors ${
-          active === link.name
-            ? "text-pink-600 font-bold border-b-2 border-pink-600"
-            : "text-gray-800 hover:text-pink-600"
+    <>
+      <header 
+        className={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
+          scrolled ? 'py-2' : 'py-0'
         }`}
       >
-        <a href={link.path}>{link.name}</a>
-      </li>
-    ))}
-</ul>
+        <div className="w-full">
+          <nav className={`relative flex items-center justify-between px-4 sm:px-6 py-3 transition-all duration-500 ${
+            scrolled 
+              ? 'mx-4 lg:mx-12 mt-2 bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl' 
+              : 'mx-0 bg-slate-900/40 backdrop-blur-md border-b border-white/5'
+          }`}>
+            
+            {/* Logo */}
+            <div className="relative z-50 flex items-center">
+              <Link to="/" className="group flex items-center gap-2">
+                <img
+                  src="https://res.cloudinary.com/dxrsaxq1d/image/upload/v1770742055/ChatGPT_Image_Feb_10_2026_10_17_29_PM_aj4imb.png"
+                  alt="Logo"
+                  className="h-10 lg:h-14 w-auto brightness-110"
+                />
+              </Link>
+            </div>
 
-        <footer className="flex justify-evenly items-center gap-5 font-medium ">
-          <ul className="bg-gray-100 flex gap-3 items-center rounded-sm px-3 py-1 h-10">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-search text-gray-700"
+            {/* Desktop Menu */}
+            <ul className="hidden lg:flex items-center gap-2 relative z-10">
+              {MenuData.map((item, index) => (
+                <li key={index} className="relative group">
+                  <Link
+                    to={item.link || "#"}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-100 hover:text-amber-500 transition-all"
+                  >
+                    <span className="text-lg">{item.icon}</span>
+                    {item.name}
+                    {item.dropDown && <FaChevronDown size={10} className="group-hover:rotate-180 transition-transform" />}
+                  </Link>
+
+                  {item.dropDown && (
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                      {item.dropDown.map((sub, i) => (
+                        <Link key={i} to={sub.link} className="flex items-center gap-3 p-3 text-sm text-slate-300 hover:text-amber-500 hover:bg-white/5 rounded-lg">
+                          {sub.icon} {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            {/* Right Side: Theme Toggle & Mobile Toggle */}
+            <div className="flex items-center gap-3 sm:gap-4 relative z-50">
+              {/* Desktop Socials */}
+              <div className="hidden lg:flex items-center gap-5 border-r border-white/20 pr-6 mr-2">
+                {SocialMedia.map((social, idx) => (
+                  <a key={idx} href={social.link} target="_blank" rel="noreferrer" className={`text-slate-300 text-xl transition-all ${social.hover}`}>
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
+
+             
+              {/* Mobile Menu Button */}
+              <button 
+                onClick={() => setIsOpen(!isOpen)} 
+                className="lg:hidden p-2 sm:p-2.5 text-white bg-white/10 rounded-xl border border-white/10"
+              >
+                {isOpen ? <HiX size={24} /> : <HiMenuAlt3 size={24} />}
+              </button>
+            </div>
+          </nav>
+        </div>
+
+        {/* Mobile Menu Overlay - Fixed position to cover screen */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 lg:hidden"
+              style={{ marginTop: '0' }}
             >
-              <path d="m21 21-4.34-4.34" />
-              <circle cx="11" cy="11" r="8" />
-            </svg>  
-            <input
-              type="text"
-              placeholder="Search for products,brands and more"
-              className="bg-gray-100 outline-none w-80"
-            />
-          </ul>
-
-          <ul className="hidden md:flex justify-evenly items-center gap-8">
-            <div className="relative group">
-  <li className="cursor-pointer hover:text-orange-600 z-50 hover:underline flex flex-col items-center text-xs">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="28"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="lucide lucide-user-icon lucide-user"
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-    Profile
-  </li>
-
- 
-  <div className="absolute right-0 top-full mt-1 w-80 px-8 py-2 cursor-pointer bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] arial font-light
-opacity-0 scale-95 transform origin-top-right transition-all duration-200 ease-out
-pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
-">
-    <ul className="text-gray-700 text-sm mt-4 bg-white">
-      <li>
-        <b className="font-bold">Welcome , </b> <br />
-        To access account and manage orders. <br /><br />
-        <button className="border h-10 w-30 text-pink-600 border-black hover:border-pink-600 cursor-pointer">
-          Login / Sign Up
-        </button>
-        <br /><br />
-        <hr />
-        <ul className="flex flex-col gap-3 cursor-pointer">
-          <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Orders</li>
-          <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Wishlist</li>
-          <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Gift Cards</li>
-          <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Contact Us</li>
-          <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Myntra Insider</li>
-        </ul>
-      </li>
-    </ul>
-    <hr />
-    <ul className="flex flex-col gap-3 cursor-pointer mt-2">
-      <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Myntra Credit</li>
-      <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Coupons</li>
-      <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Save Cards</li>
-      <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Saved VPA</li>
-      <li className="hover:text-pink-500 hover:scale-110 transform transition-all duration-200">Saved Addresses</li>
-    </ul>
-  </div>
-</div>
-
-
-            <li className="cursor-pointer hover:text-orange-600 hover:underline flex flex-col items-center text-xs">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-heart-icon lucide-heart"
+              {/* Backdrop */}
+              <div 
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                onClick={() => setIsOpen(false)}
+              />
+              
+              {/* Mobile Menu Panel - Slides from top */}
+              <motion.div
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -100, opacity: 0 }}
+                className={`absolute top-0 left-0 right-0 mt-0 mx-4 rounded-b-2xl border border-white/10 shadow-2xl overflow-hidden ${
+                  isDarkMode 
+                    ? 'bg-slate-900/95 backdrop-blur-2xl' 
+                    : 'bg-white/95 backdrop-blur-2xl'
+                }`}
+                style={{ marginTop: scrolled ? '4.5rem' : '5.5rem' }} // Adjust based on header height
               >
-                <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
-              </svg>
-              Wishlist
-            </li>
+                <div className="p-4">
+                  {/* Close button inside menu */}
+                  <div className="flex justify-end mb-4">
+                    <button 
+                      onClick={() => setIsOpen(false)} 
+                      className="p-2 text-white bg-white/10 rounded-lg"
+                    >
+                      <HiX size={24} />
+                    </button>
+                  </div>
 
-            <li className="cursor-pointer hover:text-orange-600 hover:underline flex flex-col items-center text-xs">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-handbag-icon lucide-handbag"
-              >
-                <path d="M2.048 18.566A2 2 0 0 0 4 21h16a2 2 0 0 0 1.952-2.434l-2-9A2 2 0 0 0 18 8H6a2 2 0 0 0-1.952 1.566z" />
-                <path d="M8 11V6a4 4 0 0 1 8 0v5" />
-              </svg>
-              Bag
-            </li>
-          </ul>
-        </footer>
+                  {/* Menu Items */}
+                  <ul className="space-y-2">
+                    {MenuData.map((item, idx) => (
+                      <li key={idx}>
+                        <Link 
+                          to={item.link || "#"} 
+                          onClick={() => !item.dropDown && setIsOpen(false)}
+                          className={`flex items-center justify-between p-3 text-lg font-bold rounded-xl ${
+                            isDarkMode 
+                              ? 'text-white hover:bg-white/5' 
+                              : 'text-slate-900 hover:bg-black/5'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            {item.icon} 
+                            <span>{item.name}</span>
+                          </div>
+                          {item.dropDown && <FaChevronDown size={12} />}
+                        </Link>
+                        
+                        {/* Dropdown items */}
+                        {item.dropDown && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            className="ml-8 space-y-1 overflow-hidden"
+                          >
+                            {item.dropDown.map((sub, i) => (
+                              <Link 
+                                key={i} 
+                                to={sub.link} 
+                                onClick={() => setIsOpen(false)}
+                                className={`flex items-center gap-3 py-2.5 px-3 text-sm rounded-lg ${
+                                  isDarkMode 
+                                    ? 'text-slate-300 hover:bg-white/5' 
+                                    : 'text-slate-600 hover:bg-black/5'
+                                }`}
+                              >
+                                {sub.icon} 
+                                <span>{sub.name}</span>
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
 
-      </nav>
-    </div>
+                  {/* Social Media Links */}
+                  <div className="flex justify-center gap-8 py-6 border-t border-white/10 mt-6">
+                    {SocialMedia.map((social, idx) => (
+                      <a 
+                        key={idx} 
+                        href={social.link} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className={`text-2xl transition-transform hover:scale-110 ${
+                          isDarkMode ? 'text-white' : 'text-slate-900'
+                        }`}
+                      >
+                        {social.icon}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Spacer to prevent content from being hidden under fixed header */}
+      <div className="h-16 lg:h-20" /> 
+    </>
   );
 }
